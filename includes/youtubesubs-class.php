@@ -32,7 +32,7 @@ class dsm_youtube_Widget extends WP_Widget {
 		}
 
         //Widget Content Output
-		echo '<div class="g-ytsubscribe" data-channel="'.$instance['channel'].'" data-layout="default" data-count="default"></div>';
+		echo '<div class="g-ytsubscribe" data-channel="'.$instance['channel'].'" data-layout="'.$instance['layout'].'" data-count="'.$instance['subcount'].'"></div>';
 
 		echo $args['after_widget']; // Display after widget
 	}
@@ -48,6 +48,10 @@ class dsm_youtube_Widget extends WP_Widget {
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : esc_html__( 'New title', 'dsm_domain' );
 	
 		$channel = ! empty( $instance['channel'] ) ? $instance['channel'] : esc_html__( 'Youtube Channel Name', 'dsm_domain' );
+		
+        $layout = ! empty( $instance['layout'] ) ? $instance['layout'] : esc_html__( 'Change Layout Type', 'dsm_domain' );
+        
+        $subcount = ! empty( $instance['subcount'] ) ? $instance['subcount'] : esc_html__( 'default', 'dsm_domain' );
 		?>
 
         <!--Displays the title-->
@@ -69,6 +73,40 @@ class dsm_youtube_Widget extends WP_Widget {
             type="text" 
             value="<?php echo esc_attr( $channel ); ?>">
 		</p>
+
+        <!--Layout-->
+		<p>
+		    <label for="<?php echo esc_attr( $this->get_field_id( 'layout' ) ); ?>"><?php esc_attr_e( 'Layout:', 'dsm_domain' ); ?></label> 
+		    
+            <select class="widefat" 
+                id="<?php echo esc_attr( $this->get_field_id( 'layout' ) ); ?>" 
+                name="<?php echo esc_attr( $this->get_field_name( 'layout' ) ); ?>">
+                <option value="default" <?php echo ($layout == 'default') ? 'selected' : ''; ?>>
+                    Default
+                </option>
+                <option value="full" <?php echo ($layout == 'full') ? 'selected' : ''; ?>>
+                    Full
+                </option>
+            </select>
+
+		</p>
+        
+        <!--subcount-->
+		<p>
+		    <label for="<?php echo esc_attr( $this->get_field_id( 'subcount' ) ); ?>"><?php esc_attr_e( 'Display Subs:', 'dsm_domain' ); ?></label> 
+		    
+            <select class="widefat" 
+                id="<?php echo esc_attr( $this->get_field_id( 'subcount' ) ); ?>" 
+                name="<?php echo esc_attr( $this->get_field_name( 'subcount' ) ); ?>">
+                <option value="default" <?php echo ($subcount == 'default') ? 'selected' : ''; ?>>
+                    Default
+                </option>
+                <option value="hidden" <?php echo ($subcount == 'hidden') ? 'selected' : ''; ?>>
+                    Hidden
+                </option>
+            </select>
+
+		</p>
 		<?php 
 	}
 
@@ -87,6 +125,8 @@ class dsm_youtube_Widget extends WP_Widget {
 
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : '';
 		$instance['channel'] = ( ! empty( $new_instance['channel'] ) ) ? sanitize_text_field( $new_instance['channel'] ) : '';
+		$instance['layout'] = ( ! empty( $new_instance['layout'] ) ) ? sanitize_text_field( $new_instance['layout'] ) : '';
+		$instance['subcount'] = ( ! empty( $new_instance['subcount'] ) ) ? sanitize_text_field( $new_instance['subcount'] ) : '';
 
 		return $instance;
 	}
